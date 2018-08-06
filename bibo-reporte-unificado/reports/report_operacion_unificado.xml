@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <template id="report_mrporder_inherit" inherit_id="mrp.report_mrporder">
+            <xpath expr="//div[@t-if='o.workorder_ids']/table/tr[1]/td[2]" position="after">
+                <td class="text-center"><strong>Fecha de inicio</strong></td>
+                <td class="text-center"><strong>Fecha de finalización</strong></td>
+            </xpath>
+            <xpath expr="//div[@t-if='o.workorder_ids']/table/tr[1]" position="inside">
+                <td class="text-center"><strong>Estado</strong></td>
+            </xpath>
+            <xpath expr="//div[@t-if='o.workorder_ids']/table/tr[2]/td[2]" position="after">
+                <td><span t-esc="line2.date_start" /></td>
+                <td><span t-esc="line2.date_finished" /></td>
+            </xpath>
+            <xpath expr="//div[@t-if='o.workorder_ids']/table/tr[2]" position="inside">
+                <td><span t-esc="line2.state" /></td>
+            </xpath>
+        </template>
         <template id="report_operacion_unificado">
             <t t-call="report.html_container">
                 <t t-call="report.external_layout">
@@ -56,13 +72,19 @@
                                     <tr>
                                         <td class="text-center"><strong>Nombre</strong></td>
                                         <td class="text-center"><strong>Centro de trabajo</strong></td>
+                                        <td class="text-center"><strong>Fecha de inicio</strong></td>
+                                        <td class="text-center"><strong>Fecha de finalización</strong></td>
                                         <td class="text-center"><strong>No. de minutos</strong></td>
+                                        <td class="text-center"><strong>Estado</strong></td>
                                     </tr>
                                 </t>
                                 <tr t-foreach="o.workorder_ids" t-as="line2">
                                     <td class="text-center"><span t-field="line2.name"/></td>
                                     <td class="text-center"><span t-if="line2.workcenter_id" t-field="line2.workcenter_id.name"/></td>
+                                    <td><span t-esc="line2.date_start" /></td>
+                                    <td><span t-esc="line2.date_finished" /></td>
                                     <td class="text-center"><span t-field="line2.duration_expected"/></td>
+                                    <td><span t-esc="line2.state" /></td>
                                 </tr>
                                 <t t-set="contador" t-value="contador + 1" />
                             </t>
